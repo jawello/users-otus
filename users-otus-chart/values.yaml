@@ -13,19 +13,18 @@ service:
   port: 8000
 
 ingress:
-  enabled: false
+  enabled: true
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
   hosts:
     - host: arch.homework
       paths:
-        path: /otusapp($|/)(.*)
+        path: /users
 
 metrics:
-  enabled: true
+  enabled: false
   serviceMonitor:
-    enabled: true
+    enabled: false
 
 postgresql:
   enabled: true
@@ -35,14 +34,14 @@ postgresql:
   service:
     port: "5432"
   metrics:
-    enabled: true
+    enabled: false
     service:
       type: NodePort
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9187"
     serviceMonitor:
-      enabled: true
+      enabled: false
       additionalLabels: {}
       namespace: monitoring
       interval: 30s
