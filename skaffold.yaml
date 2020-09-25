@@ -1,0 +1,17 @@
+apiVersion: skaffold/v2beta4
+kind: Config
+metadata:
+  name: users-otus
+build:
+  artifacts:
+  - image: users-otus
+    context: src
+deploy:
+  helm:
+    releases:
+      - name: users-otus
+        chartPath: users-otus-chart
+        artifactOverrides:
+          image: users-otus
+        valuesFiles:
+          - users-otus-chart/values.yaml
