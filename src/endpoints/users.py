@@ -1,5 +1,5 @@
 from aiohttp.web import Request, HTTPNotFound, HTTPConflict, HTTPBadRequest, HTTPNoContent, \
-    HTTPCreated, HTTPForbidden
+    HTTPCreated, HTTPForbidden, HTTPUnauthorized
 from aiohttp.web_response import Response
 import json
 from aiohttp import web
@@ -37,7 +37,8 @@ async def users_get(request: Request) -> Response:
 @routes.get("/users/{login}")
 async def users_login_get(request: Request) -> Response:
     session_maker = request.app['db_session_manager']
-    log.debug(request.headers)
+    if 'X-Login' not in request.headers:
+        return HTTPUnauthorized()
     if not request.headers['X-Login'] == request.match_info['login']:
         return HTTPForbidden()
     session: Session = session_maker()
